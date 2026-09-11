@@ -1,0 +1,53 @@
+---
+import type { ImageMetadata } from 'astro';
+import { experience } from '../../data/experience';
+import type { ExperienceTimelineEntry } from '../../types/experience';
+import ExperienceTimelineItem from '../experience/ExperienceTimelineItem.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+const logos = import.meta.glob('../../assets/experience/*.webp', {
+  eager: true,
+  import: 'default',
+}) as Record<string, ImageMetadata>;
+
+const sortedExperience = [...experience].sort((left, right) =>
+  right.startedAt.localeCompare(left.startedAt),
+);
+
+const career = sortedExperience.map((entry, index) => ({
+  ...entry,
+  logoImage: logos[`../../assets/experience/${entry.logo}.webp`],
+  isCurrent: index === 0,
+  isLast: index === sortedExperience.length - 1,
+})) satisfies ExperienceTimelineEntry[];
+---
+
+<section
+  class="relative overflow-hidden border-y border-paper/12 bg-[radial-gradient(circle_at_15%_10%,rgba(108,31,197,0.18),transparent_30rem),linear-gradient(180deg,rgba(25,20,48,0.72),rgba(16,22,24,0.58))] py-[clamp(5.5rem,10vw,8rem)] max-md:pt-18 max-md:pb-22"
+  id="experiencia"
+  aria-labelledby="experience-title"
+>
+  <div class="mx-auto w-[min(calc(100%_-_2rem),72rem)] md:w-[min(calc(100%_-_4rem),72rem)]">
+    <SectionHeading
+      headingId="experience-title"
+      index="02"
+      label="Experiencia profesional"
+      title="Mi camino profesional."
+      description="Experiencias que fortalecieron mi forma de colaborar, aprender y construir software."
+    />
+
+    <div
+      class="lg:mt-14 lg:overflow-x-auto lg:overscroll-x-contain lg:pb-6 lg:[scrollbar-color:rgba(148,163,184,0.48)_rgba(255,255,255,0.06)] lg:[scrollbar-width:thin]"
+      tabindex="0"
+      role="region"
+      aria-label="Cronología desplazable de experiencia profesional"
+    >
+      <ol
+        class="relative mt-2 grid list-none gap-y-10 p-0 lg:mt-0 lg:grid-flow-col lg:auto-cols-[calc((100%_-_4rem)/3)] lg:items-stretch lg:gap-x-8 lg:gap-y-0"
+        aria-label="Cronología de experiencia profesional"
+      >
+        {career.map((entry) => <ExperienceTimelineItem entry={entry} />)}
+      </ol>
+    </div>
+  </div>
+</section>

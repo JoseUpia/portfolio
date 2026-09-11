@@ -1,0 +1,29 @@
+---
+import '../styles/global.css';
+import { site } from '../data/portfolio';
+import type { BaseLayoutProps } from '../types/layout';
+
+const { title = site.title, description = site.description } = Astro.props as BaseLayoutProps;
+---
+
+<!doctype html>
+<html lang="es" class="motion-reduce:scroll-auto">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="theme-color" content="#161b1e" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen bg-[radial-gradient(circle_at_77%_10%,rgba(108,31,197,0.09),transparent_24rem)] antialiased">
+    <a
+      class="fixed top-4 left-4 z-100 -translate-y-[200%] rounded-md bg-paper px-4 py-2.5 font-bold text-ink transition-transform focus:translate-y-0 focus:outline-2 focus:outline-offset-4 focus:outline-violet-bright"
+      href="#contenido"
+    >
+      Saltar al contenido
+    </a>
+    <slot />
+  </body>
+</html>

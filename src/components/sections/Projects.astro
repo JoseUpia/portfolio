@@ -1,0 +1,42 @@
+---
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import brandMark from '../../assets/brand/jmu-mark.svg';
+import { featuredProjects } from '../../data/projects';
+import ProjectCard from '../projects/ProjectCard.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+const focus = 'focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet-bright';
+const [spotlightProject, ...supportingProjects] = featuredProjects;
+---
+
+<section class="relative isolate overflow-hidden border-y border-paper/10 bg-[radial-gradient(circle_at_88%_8%,rgba(182,53,242,0.13),transparent_27rem),linear-gradient(180deg,rgba(40,14,105,0.08),transparent_36rem)]" id="proyectos" aria-labelledby="projects-title">
+  <Image src={brandMark} alt="" class="pointer-events-none absolute -top-16 -right-24 -z-10 w-[min(46vw,34rem)] opacity-[0.035]" aria-hidden="true" />
+  <div class="mx-auto w-[min(calc(100%_-_2rem),78rem)] py-[clamp(5.5rem,11vw,9rem)] md:w-[min(calc(100%_-_4rem),78rem)]">
+    <div class="grid gap-7 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+      <SectionHeading
+        headingId="projects-title"
+        index="01"
+        label="Proyectos destacados"
+        title="Proyectos seleccionados"
+        description="Una selección de productos y exploraciones donde las decisiones técnicas responden a una necesidad concreta."
+      />
+      <p class="mb-8 hidden max-w-52 font-mono text-[0.68rem] leading-relaxed tracking-[0.08em] text-paper/45 uppercase lg:block">Tres formas de convertir una idea en software que se puede explorar.</p>
+    </div>
+
+    <div class="grid items-stretch gap-5 lg:grid-cols-[minmax(0,1.02fr)_minmax(29rem,0.98fr)]">
+      {spotlightProject && <ProjectCard project={spotlightProject} variant="spotlight" index="01 / DESTACADO" />}
+      <div class="grid gap-5 lg:grid-rows-2">
+        {supportingProjects.map((project, index) => <ProjectCard project={project} variant="compact" index={`0${index + 2}`} />)}
+      </div>
+    </div>
+
+    {/* El acceso al archivo completo se habilitará en una versión posterior.
+    <div class="mt-9 flex justify-end border-t border-paper/10 pt-7">
+      <a class:list={['group inline-flex min-h-12 items-center gap-3 rounded-full border border-violet-bright/30 bg-violet-deep/18 px-5 py-3 text-sm font-bold text-paper transition hover:border-violet-bright/60 hover:bg-violet-deep/30', focus]} href="/projects/">
+        Explorar todos <span class="grid size-7 place-items-center rounded-full bg-violet-bright text-ink transition-transform group-hover:translate-x-0.5"><Icon name="lucide:arrow-right" class="size-4" aria-hidden="true" /></span>
+      </a>
+    </div>
+    */}
+  </div>
+</section>

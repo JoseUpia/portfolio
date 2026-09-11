@@ -1,2 +1,7 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Preserve document and image assets byte-for-byte.
+*.pdf binary
+*.webp binary
+*.ico binary

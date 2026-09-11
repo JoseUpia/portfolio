@@ -1,0 +1,27 @@
+---
+import { Icon } from 'astro-icon/components';
+import Footer from '../components/layout/Footer.astro';
+import Header from '../components/layout/Header.astro';
+import ProjectCard from '../components/projects/ProjectCard.astro';
+import { projects } from '../data/projects';
+import { site } from '../data/portfolio';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const focus = 'focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet-bright';
+---
+
+<BaseLayout title={`Proyectos — ${site.name}`} description="Proyectos de software de Jose Miguel Upia, organizados desde el más reciente hasta el más antiguo.">
+  <Header />
+  <main id="contenido">
+    <section class="mx-auto w-[min(calc(100%_-_2rem),72rem)] py-[clamp(4.5rem,9vw,7.5rem)] md:w-[min(calc(100%_-_4rem),72rem)]" aria-labelledby="projects-page-title">
+      <a class:list={['inline-flex min-h-11 items-center gap-2 font-mono text-xs font-bold text-violet-bright hover:text-[#d985ff]', focus]} href="/#proyectos"><Icon name="lucide:arrow-left" class="size-4" aria-hidden="true" /> Volver al portafolio</a>
+      <div class="mt-8 grid gap-6 border-b border-paper/12 pb-10 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.45fr)] lg:items-end">
+        <div><p class="font-mono text-xs font-bold tracking-[0.1em] text-violet-bright uppercase">Archivo de proyectos</p><h1 id="projects-page-title" class="mt-3 text-[clamp(3rem,8vw,6.5rem)] leading-[0.92] font-medium tracking-[-0.065em]">Software que deja rastro.</h1></div>
+        <p class="max-w-lg text-muted">Proyectos públicos y privados ordenados desde el trabajo más reciente. Cada tarjeta distingue qué se puede consultar, ejecutar o visitar.</p>
+      </div>
+      <div class="mt-10 flex items-center justify-between gap-4 font-mono text-[0.68rem] tracking-[0.08em] text-paper/50 uppercase"><span>{projects.length} proyectos</span><span>Más reciente → más antiguo</span></div>
+      <div class="mt-6 grid items-stretch gap-5 md:grid-cols-2 lg:grid-cols-3">{projects.map((project) => <ProjectCard project={project} />)}</div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>

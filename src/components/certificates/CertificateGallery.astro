@@ -1,0 +1,134 @@
+---
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import type { ImageMetadata } from 'astro';
+import type { Certificate, CertificateGalleryProps } from '../../types/certificates';
+
+const { certificates, presentation = 'catalog' } = Astro.props as CertificateGalleryProps;
+const thumbnails = import.meta.glob('../../assets/certificates/thumbs/*.webp', {
+  eager: true,
+  import: 'default',
+}) as Record<string, ImageMetadata>;
+const previews = import.meta.glob('../../assets/certificates/previews/*.webp', {
+  eager: true,
+  import: 'default',
+}) as Record<string, ImageMetadata>;
+
+const getThumbnail = (slug: string) => thumbnails[`../../assets/certificates/thumbs/${slug}.webp`];
+const getPreviews = (certificate: Certificate) =>
+  (certificate.previews ?? [certificate.slug]).map(
+    (name) => previews[`../../assets/certificates/previews/${name}.webp`],
+  );
+
+const isFeatured = presentation === 'featured';
+const focus = 'focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet-bright';
+---
+
+<div class:list={[
+  'grid gap-5',
+  isFeatured ? 'lg:grid-cols-3' : 'md:grid-cols-2 xl:grid-cols-3',
+]}>
+  {certificates.map((certificate) => {
+    const thumbnail = getThumbnail(certificate.slug);
+    const dialogId = `certificate-preview-${certificate.slug}`;
+
+    return (
+      <article class:list={[
+        'group/card flex min-w-0 flex-col overflow-hidden rounded-2xl border border-paper/12 bg-panel/75 shadow-[0_1.5rem_4rem_rgba(0,0,0,0.12)] transition duration-300 hover:-translate-y-1 hover:border-violet-bright/35 hover:shadow-[0_1.75rem_4rem_rgba(40,14,105,0.22)] motion-reduce:transform-none motion-reduce:transition-none',
+        isFeatured && 'bg-panel/60',
+      ]}>
+        <div class:list={[
+          'grid w-full place-items-center overflow-hidden border-b border-paper/10 bg-[#ecefee] p-3 sm:p-4',
+          isFeatured ? 'aspect-[16/10]' : 'aspect-[4/3]',
+        ]}>
+          {thumbnail && (
+            <Image
+              src={thumbnail}
+              alt={`Certificado de ${certificate.title}`}
+              widths={isFeatured ? [280, 400, 560] : [320, 480, 640]}
+              sizes={isFeatured ? '(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw' : '(min-width: 1280px) 350px, (min-width: 768px) 50vw, 100vw'}
+              loading="lazy"
+              class="size-full object-contain transition duration-500 group-hover/card:scale-[1.025] motion-reduce:transform-none motion-reduce:transition-none"
+            />
+          )}
+        </div>
+
+        <div class:list={['flex flex-1 flex-col', isFeatured ? 'p-4 sm:p-5' : 'p-5 sm:p-6']}>
+          <div class:list={['flex flex-wrap gap-2 font-mono text-[0.72rem] text-muted', isFeatured ? 'mb-3' : 'mb-4']}>
+            <time datetime={certificate.dateTime} class="rounded-full border border-paper/12 px-2.5 py-1">{certificate.issued}</time>
+            {certificate.duration && <span class="rounded-full border border-violet-bright/30 bg-violet-deep/20 px-2.5 py-1 text-[#deb6f1]">{certificate.duration}</span>}
+          </div>
+          <h3 class:list={[isFeatured ? 'text-lg' : 'text-xl', 'leading-tight font-semibold tracking-[-0.025em] text-paper']}>{certificate.title}</h3>
+          <p class:list={[isFeatured ? 'mt-1.5 text-[0.84rem]' : 'mt-2 text-sm', 'text-muted']}>{certificate.issuer}</p>
+
+          <div class:list={['mt-auto flex flex-wrap items-center gap-x-5 gap-y-2 font-bold', isFeatured ? 'pt-4 text-[0.82rem]' : 'pt-6 text-sm']}>
+            <button
+              type="button"
+              class:list={['inline-flex min-h-11 cursor-pointer items-center gap-2 text-violet-bright transition-colors hover:text-paper', focus]}
+              data-preview-dialog={dialogId}
+              aria-haspopup="dialog"
+              aria-controls={dialogId}
+            >
+              Vista previa
+              <Icon name="lucide:expand" class="size-4" aria-hidden="true" />
+            </button>
+            <a
+              class:list={['inline-flex min-h-11 items-center gap-2 text-muted transition-colors hover:text-paper', focus]}
+              href={`/certificates/pdf/${certificate.slug}.pdf`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Abrir PDF
+              <Icon name="lucide:external-link" class="size-4" aria-hidden="true" />
+            </a>
+          </div>
+        </div>
+      </article>
+    );
+  })}
+</div>
+
+{certificates.map((certificate) => {
+  const dialogId = `certificate-preview-${certificate.slug}`;
+  const certificatePreviews = getPreviews(certificate);
+
+  return (
+    <dialog
+      id={dialogId}
+      class="m-auto max-h-[92dvh] w-[min(94vw,70rem)] overflow-hidden rounded-2xl border border-paper/15 bg-ink p-0 text-paper shadow-[0_2rem_8rem_rgba(0,0,0,0.7)] backdrop:bg-black/80 backdrop:backdrop-blur-sm"
+      aria-labelledby={`${dialogId}-title`}
+    >
+      <div class="flex max-h-[92dvh] flex-col">
+        <header class="flex shrink-0 items-start justify-between gap-5 border-b border-paper/12 bg-panel/75 px-4 py-4 sm:px-6">
+          <div class="min-w-0">
+            <p class="font-mono text-[0.7rem] font-bold tracking-[0.08em] text-violet-bright uppercase">Vista del certificado</p>
+            <h2 id={`${dialogId}-title`} class="mt-1 text-lg font-semibold sm:text-xl">{certificate.title}</h2>
+            <p class="mt-1 text-sm text-muted">{certificate.issuer}</p>
+          </div>
+          <form method="dialog">
+            <button class:list={['grid size-11 cursor-pointer place-items-center rounded-full border border-paper/15 text-muted transition-colors hover:bg-paper/10 hover:text-paper', focus]} aria-label="Cerrar vista del certificado">
+              <Icon name="lucide:x" class="size-5" aria-hidden="true" />
+            </button>
+          </form>
+        </header>
+
+        <div class:list={['min-h-0 overflow-y-auto bg-[#dfe3e4] p-3 sm:p-6', certificatePreviews.length > 1 && 'grid gap-4 lg:grid-cols-2 lg:items-start']}>
+          {certificatePreviews.map((preview, index) => (
+            preview && <img src={preview.src} width={preview.width} height={preview.height} alt={certificatePreviews.length > 1 ? `${certificate.title}, página ${index + 1}` : certificate.title} loading="lazy" class="mx-auto h-auto w-full rounded-sm bg-white shadow-xl" />
+          ))}
+        </div>
+
+        <footer class="flex shrink-0 justify-end border-t border-paper/12 bg-panel/75 px-4 py-3 sm:px-6">
+          <a class:list={['inline-flex min-h-11 items-center gap-2 rounded-lg bg-violet-bright px-4 py-2 text-sm font-bold text-ink transition hover:bg-paper', focus]} href={`/certificates/pdf/${certificate.slug}.pdf`} target="_blank" rel="noopener noreferrer">
+            Abrir PDF original
+            <Icon name="lucide:external-link" class="size-4" aria-hidden="true" />
+          </a>
+        </footer>
+      </div>
+    </dialog>
+  );
+})}
+
+<script>
+  import '../../scripts/certificate-preview';
+</script>

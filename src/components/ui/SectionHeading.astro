@@ -1,0 +1,17 @@
+---
+import type { SectionHeadingProps } from '../../types/ui';
+
+const { headingId, index, label, title, description } = Astro.props as SectionHeadingProps;
+---
+
+<div class="mb-10 grid items-end gap-6 md:mb-16 md:grid-cols-[minmax(0,1fr)_minmax(16rem,0.52fr)]">
+  <div>
+    <p class="mb-2.5 font-mono text-[0.7rem] font-bold tracking-[0.08em] text-violet-bright uppercase">
+      // {index} — {label}
+    </p>
+    <h2 id={headingId} class="m-0 text-[clamp(2.35rem,5vw,4.4rem)] leading-none font-medium tracking-[-0.055em]">
+      {title}
+    </h2>
+  </div>
+  {description && <p class="m-0 max-w-116 text-[0.95rem] text-muted">{description}</p>}
+</div>

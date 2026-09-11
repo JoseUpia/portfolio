@@ -1,0 +1,58 @@
+---
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import type { ExperienceTimelineEntry } from '../../types/experience';
+
+const { entry } = Astro.props as { entry: ExperienceTimelineEntry };
+---
+
+<li
+  class:list={[
+    'relative grid grid-cols-[3.5rem_minmax(0,1fr)] gap-x-5 lg:flex lg:h-full lg:flex-col',
+    !entry.isLast && "after:absolute after:top-16 after:-bottom-12 after:left-7 after:w-[3px] after:bg-violet-bright after:shadow-[0_0_0.85rem_rgba(182,53,242,0.42)] after:content-[''] lg:after:top-7 lg:after:right-[-2rem] lg:after:bottom-auto lg:after:left-14 lg:after:h-[3px] lg:after:w-auto",
+  ]}
+>
+  <span
+    class:list={[
+      'relative z-1 mt-2 grid size-14 place-items-center overflow-hidden rounded-full border-2 border-paper/90 bg-panel shadow-[0_0_0_0.35rem_rgba(108,31,197,0.14),0_0_1.1rem_rgba(182,53,242,0.24)] lg:mt-0',
+      entry.isCurrent ? 'ring-1 ring-violet-bright/60' : 'ring-1 ring-paper/15',
+    ]}
+  >
+    {entry.logoImage && (
+      <Image
+        src={entry.logoImage}
+        alt={`Logo de ${entry.organization}`}
+        width={112}
+        height={112}
+        loading="lazy"
+        class="size-full rounded-full object-contain"
+      />
+    )}
+  </span>
+
+  <article class="col-start-2 min-w-0 pt-1 lg:col-auto lg:flex lg:flex-1 lg:flex-col lg:pt-7">
+    <p class="font-mono text-[0.68rem] font-bold tracking-[0.07em] text-violet-bright uppercase">
+      {entry.period}
+    </p>
+    <h3 class="mt-2 text-[clamp(1rem,4.8vw,1.2rem)] leading-tight font-semibold tracking-[-0.03em] text-paper lg:text-xl">
+      {entry.role}
+    </h3>
+    <p class="mt-2 font-mono text-[0.7rem] leading-5 font-semibold tracking-[0.025em] text-violet-bright/85 lg:text-[0.8rem]">
+      {entry.organization}
+    </p>
+    <p class="mt-4 max-w-sm text-[0.84rem] leading-[1.45rem] text-muted lg:text-[0.83rem] lg:leading-6">
+      {entry.summary}
+    </p>
+
+    <div class="mt-4 flex flex-wrap gap-2 max-[30rem]:flex-col max-[30rem]:items-start lg:mt-auto lg:pt-4">
+      <span class="inline-flex items-center gap-1.5 rounded-full border border-violet-bright/35 bg-violet-deep/12 px-2 py-1.5 font-mono text-[0.64rem] leading-none text-paper/80">
+        <Icon name="lucide:map-pin" class="size-3.5 shrink-0 text-violet-bright" aria-hidden="true" />
+        {entry.location}
+      </span>
+      <span class="inline-flex items-center gap-1.5 rounded-full border border-violet-bright/35 bg-violet-deep/12 px-2 py-1.5 font-mono text-[0.64rem] leading-none text-paper/80">
+        <Icon name="lucide:monitor" class="size-3.5 shrink-0 text-violet-bright" aria-hidden="true" />
+        {entry.modality}
+      </span>
+    </div>
+  </article>
+</li>

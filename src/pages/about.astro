@@ -1,0 +1,49 @@
+---
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import me from '../assets/me.webp';
+import { site } from '../data/portfolio';
+
+const focus = 'focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet-bright';
+---
+
+<BaseLayout
+  title={`Acerca de mí — ${site.name}`}
+  description="Conoce el enfoque profesional, la experiencia y la forma de construir software de Jose Miguel Upia."
+>
+  <Header />
+  <main id="contenido">
+    <section class="mx-auto grid min-h-[calc(100svh-9rem)] w-[min(calc(100%_-_2rem),72rem)] items-center gap-12 py-[clamp(4.5rem,10vw,8rem)] md:w-[min(calc(100%_-_4rem),72rem)] lg:grid-cols-[minmax(16rem,0.7fr)_minmax(0,1.3fr)] lg:gap-20">
+      <div class="relative mx-auto w-[min(68vw,21rem)] lg:mx-0">
+        <div class="absolute -inset-[8%] rounded-full border border-violet-bright/25" aria-hidden="true"></div>
+        <div class="absolute -inset-[15%] rounded-full border border-violet/12" aria-hidden="true"></div>
+        <div class="relative aspect-square overflow-hidden rounded-full border-[0.22rem] border-paper/75 bg-panel shadow-[0_0_0_0.75rem_rgba(108,31,197,0.09),0_2rem_5rem_rgba(0,0,0,0.28)]">
+          <Image src={me} alt={`Retrato ilustrado de ${site.name}`} width={640} height={640} loading="eager" class="size-full object-cover" />
+        </div>
+        <span class="absolute right-[3%] bottom-[8%] size-5 rounded-full border-4 border-ink bg-violet-bright shadow-[0_0_1.25rem_rgba(182,53,242,0.65)]" aria-hidden="true"></span>
+      </div>
+
+      <div>
+        <p class="font-mono text-xs font-bold tracking-[0.1em] text-violet-bright uppercase">Acerca de mí</p>
+        <h1 class="mt-3 text-[clamp(2.8rem,7vw,5.5rem)] leading-[0.95] font-medium tracking-[-0.06em]">{site.name}</h1>
+        <div class="mt-8 max-w-2xl space-y-5 text-[clamp(1rem,1.5vw,1.12rem)] leading-relaxed text-muted">
+          <p>Desarrollador de software enfocado en crear aplicaciones web modernas, escalables y confiables.</p>
+          <p>Me especializo en desarrollo integral de software, combinando experiencia de interfaz con Angular y TypeScript, y desarrollo de servicios con C#, .NET y Node.js. Disfruto participar en todo el ciclo de desarrollo, transformando ideas y requisitos de negocio en soluciones bien estructuradas, mantenibles y preparadas para producción.</p>
+          <p>Mi forma de desarrollar software va más allá de escribir código. Me interesa comprender cómo funcionan los sistemas en conjunto, tomar decisiones técnicas razonadas, resolver problemas complejos y construir aplicaciones que aporten valor real a las personas y organizaciones.</p>
+        </div>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a class:list={['inline-flex min-h-12 items-center gap-2 rounded-lg bg-violet-bright px-5 py-3 text-sm font-bold text-ink transition hover:-translate-y-0.5 hover:bg-[#cc65fa] motion-reduce:transform-none', focus]} href={site.cv} download>
+            Descargar CV <Icon name="lucide:download" class="size-4" aria-hidden="true" />
+          </a>
+          <a class:list={['inline-flex min-h-12 items-center gap-2 rounded-lg border border-paper/12 px-5 py-3 text-sm font-bold transition hover:border-paper/30 hover:bg-surface/35', focus]} href="/#inicio">
+            Volver al inicio <Icon name="lucide:arrow-left" class="size-4" aria-hidden="true" />
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>

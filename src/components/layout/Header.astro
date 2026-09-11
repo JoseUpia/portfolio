@@ -1,0 +1,60 @@
+---
+import { Image } from 'astro:assets';
+import { navigation, site } from '../../data/portfolio';
+import { Icon } from 'astro-icon/components';
+import brandMark from '../../assets/brand/jmu-mark.svg';
+
+const focus = 'focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet-bright';
+const isHome = Astro.url.pathname === '/';
+const resolveHref = (href: string) => (!isHome && href.startsWith('#') ? `/${href}` : href);
+const primaryNavigation = navigation.filter((item) => item.href !== '#inicio' && item.href !== '/about/');
+---
+
+<header class="sticky top-0 z-50 min-h-18 border-b border-paper/12 bg-ink/85 backdrop-blur-lg">
+  <div class="mx-auto grid min-h-18 w-[min(calc(100%-2rem),72rem)] grid-cols-[auto_1fr] items-center gap-4 md:w-[min(calc(100%-4rem),72rem)] lg:grid-cols-[auto_minmax(0,1fr)_auto] lg:gap-6">
+    <a class:list={['inline-flex items-center gap-2 font-mono text-xs font-bold text-violet-bright', focus]} href={resolveHref('#inicio')} aria-label={`${site.name}, volver al inicio`}>
+      <Image src={brandMark} alt="" class="h-6 w-9 object-contain drop-shadow-[0_0_0.55rem_rgba(182,53,242,0.3)]" aria-hidden="true" />
+      <span><span class="text-paper">jose</span><span class="text-violet-bright">upia.com</span></span>
+    </a>
+
+    <nav class="hidden items-center justify-self-center gap-[clamp(0.7rem,1.45vw,1.35rem)] lg:flex" aria-label="Navegación principal">
+      {primaryNavigation.map((item) => (
+        <a class:list={['text-[0.8rem] font-semibold text-muted transition-colors hover:text-paper', focus]} href={resolveHref(item.href)}>{item.label}</a>
+      ))}
+    </nav>
+
+    <div class="hidden items-center justify-self-end gap-2 lg:flex" aria-label="Preferencias visuales próximamente disponibles">
+      <button class:list={['inline-flex min-h-10 items-center gap-2 rounded-lg border border-paper/12 bg-surface/20 px-3 font-mono text-[0.68rem] font-bold text-muted', focus]} type="button" title="Selector de idioma próximamente" aria-label="Cambiar idioma, próximamente">
+        <Icon name="lucide:languages" class="size-4 text-violet-bright" aria-hidden="true" /> ES
+      </button>
+      <button class:list={['grid size-10 place-items-center rounded-lg border border-paper/12 bg-surface/20 text-muted', focus]} type="button" title="Selector de tema próximamente" aria-label="Cambiar tema, próximamente">
+        <Icon name="lucide:sun-moon" class="size-4" aria-hidden="true" />
+      </button>
+    </div>
+
+    <details class="group relative justify-self-end lg:hidden">
+      <summary class:list={['grid size-11 cursor-pointer list-none place-content-center rounded-lg border border-paper/12 [&::-webkit-details-marker]:hidden', focus]} aria-label="Abrir menú de navegación">
+        <Icon name="lucide:menu" class="size-5 group-open:hidden" aria-hidden="true" />
+        <Icon name="lucide:x" class="hidden size-5 group-open:block" aria-hidden="true" />
+      </summary>
+      <div class="absolute top-[calc(100%+0.75rem)] right-0 w-[min(19rem,calc(100vw-2rem))] overflow-hidden rounded-xl border border-paper/12 bg-[#1d2327] shadow-[0_1.5rem_4rem_rgba(0,0,0,0.38)]">
+        <nav class="grid" aria-label="Navegación móvil">
+          {primaryNavigation.map((item) => (
+            <a class:list={['flex min-h-12 items-center border-b border-paper/12 px-4 py-3 text-muted hover:bg-surface/40 hover:text-paper', focus]} href={resolveHref(item.href)}>{item.label}</a>
+          ))}
+        </nav>
+
+        <div class="grid grid-cols-2 gap-2 bg-ink/35 p-3" aria-label="Preferencias visuales próximamente disponibles">
+          <button class:list={['inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-paper/12 bg-surface/25 px-3 font-mono text-[0.7rem] font-bold text-muted', focus]} type="button" title="Selector de idioma próximamente" aria-label="Cambiar idioma, próximamente">
+            <Icon name="lucide:languages" class="size-4 text-violet-bright" aria-hidden="true" /> Idioma · ES
+          </button>
+          <button class:list={['inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-paper/12 bg-surface/25 px-3 font-mono text-[0.7rem] font-bold text-muted', focus]} type="button" title="Selector de tema próximamente" aria-label="Cambiar tema, próximamente">
+            <Icon name="lucide:sun-moon" class="size-4 text-violet-bright" aria-hidden="true" /> Tema
+          </button>
+        </div>
+      </div>
+    </details>
+  </div>
+</header>
+
+<script src="../../scripts/header-menu.ts"></script>

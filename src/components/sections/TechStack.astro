@@ -1,0 +1,129 @@
+---
+import { Image } from 'astro:assets';
+import { stackGroups } from '../../data/portfolio';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+import angular from '../../assets/tech/angular.svg';
+import astro from '../../assets/tech/astro.svg';
+import bootstrap from '../../assets/tech/bootstrap.svg';
+import csharp from '../../assets/tech/csharp.svg';
+import css from '../../assets/tech/css-new.svg';
+import docker from '../../assets/tech/docker.svg';
+import dotnet from '../../assets/tech/dotnet.svg';
+import figma from '../../assets/tech/figma.svg';
+import flutter from '../../assets/tech/flutter.svg';
+import git from '../../assets/tech/git.svg';
+import html from '../../assets/tech/html5.svg';
+import javascript from '../../assets/tech/javascript.svg';
+import sqlServer from '../../assets/tech/microsoft-sql-server.svg';
+import nestjs from '../../assets/tech/nestjs.svg';
+import nodejs from '../../assets/tech/nodejs.svg';
+import postgresql from '../../assets/tech/postgresql.svg';
+import tailwind from '../../assets/tech/tailwindcss-blue.svg';
+import typescript from '../../assets/tech/typescript.svg';
+import pnpm from '../../assets/tech/pnpm.svg';
+import odoo from '../../assets/tech/odoo.svg';
+
+const logos = [
+  // Tech logos up
+  { name: 'Astro', src: astro, dark: true },
+  { name: 'Angular', src: angular },
+  { name: 'Docker', src: docker, dark: true },
+  { name: 'Bootstrap', src: bootstrap },
+  { name: 'C#', src: csharp, dark: true },
+  { name: 'CSS', src: css },
+  { name: 'Figma', src: figma, dark: true },
+  { name: '.NET', src: dotnet },
+  { name: 'Flutter', src: flutter, dark: true },
+  { name: 'Odoo', src: odoo },
+  // Tech logos down
+  { name: 'Git', src: git, dark: true },
+  { name: 'HTML5', src: html },
+  { name: 'Microsoft SQL Server', src: sqlServer, dark: true },
+  { name: 'JavaScript', src: javascript },
+  { name: 'Tailwind CSS', src: tailwind, dark: true },
+  { name: 'NestJS', src: nestjs },
+  { name: 'TypeScript', src: typescript, dark: true },
+  { name: 'Node.js', src: nodejs },
+  { name: 'pnpm', src: pnpm, dark: true },
+  { name: 'PostgreSQL', src: postgresql },
+];
+
+const logoRows = [logos.slice(0, 10), logos.slice(10, 20)];
+---
+
+<section class="relative overflow-hidden py-[clamp(5.5rem,11vw,9rem)]" id="stack" aria-labelledby="stack-title">
+  <div class="mx-auto w-[min(calc(100%-2rem),72rem)] md:w-[min(calc(100%-4rem),72rem)]">
+    <SectionHeading
+      headingId="stack-title"
+      index="03"
+      label="Herramientas"
+      title="Habilidades y herramientas"
+      description="Tecnologías que uso para pensar, construir y entregar productos digitales de extremo a extremo."
+    />
+  </div>
+
+  <div
+    class="group/stage relative grid gap-9 overflow-hidden border-y border-paper/12 bg-[radial-gradient(circle_at_25%_50%,rgba(182,53,242,0.14),transparent_24rem),radial-gradient(circle_at_75%_50%,rgba(108,31,197,0.12),transparent_26rem)] bg-[#0e1214]/65 py-6 after:pointer-events-none after:absolute after:inset-0 after:z-2 after:bg-linear-to-r after:from-ink after:via-transparent after:to-ink"
+    aria-label="Tecnologías y herramientas"
+  >
+    {logoRows.map((row, rowIndex) => (
+      <div class="overflow-hidden py-2 mask-[linear-gradient(90deg,transparent,black_5%,black_95%,transparent)] sm:mask-[linear-gradient(90deg,transparent,black_7%,black_93%,transparent)] motion-reduce:overflow-visible motion-reduce:mask-none">
+        <div class:list={[
+          'flex w-max will-change-transform group-hover/stage:[animation-play-state:paused] motion-reduce:w-full motion-reduce:animate-none',
+          rowIndex === 0
+            ? 'animate-[logo-scroll-left_38s_linear_infinite]'
+            : 'animate-[logo-scroll-right_42s_linear_infinite]',
+        ]}>
+          {[0, 1].map((copyIndex) => (
+            <ul
+              class:list={[
+                'flex min-w-screen w-max shrink-0 list-none p-0 motion-reduce:min-w-0 motion-reduce:w-full motion-reduce:flex-wrap motion-reduce:justify-center',
+                { 'motion-reduce:hidden': copyIndex === 1 },
+              ]}
+              aria-hidden={copyIndex === 1 ? 'true' : undefined}
+            >
+              {row.map((technology) => (
+                <li
+                  class="group/logo flex min-w-12 flex-1 shrink-0 items-center justify-center px-1 sm:min-w-[clamp(6.5rem,8vw,8.5rem)] sm:px-2"
+                  aria-label={copyIndex === 0 ? technology.name : undefined}
+                  title={copyIndex === 0 ? technology.name : undefined}
+                >
+                  <div
+                    class:list={[
+                      'grid h-11 w-10 place-items-center rounded-lg border shadow-[0_0.75rem_1.75rem_rgba(0,0,0,0.28)] transition duration-200 group-hover/logo:z-3 group-hover/logo:-translate-y-1 group-hover/logo:scale-105 group-hover/logo:border-violet-bright/75 group-hover/logo:shadow-[0_1rem_2.5rem_rgba(0,0,0,0.38),0_0_1.5rem_rgba(182,53,242,0.28)] motion-reduce:transform-none sm:h-[clamp(4.9rem,6.3vw,6rem)] sm:w-[clamp(5.5rem,7vw,6.75rem)] sm:rounded-xl',
+                      technology.dark
+                        ? 'border-violet-bright/45 bg-linear-to-br from-[#241440] to-[#11171b]'
+                        : 'border-paper/70 bg-linear-to-br from-white to-[#e8e8ee]',
+                    ]}
+                  >
+                    <Image
+                      src={technology.src}
+                      alt=""
+                      width={72}
+                      height={72}
+                      loading="lazy"
+                      class="size-6 object-contain drop-shadow-sm saturate-110 contrast-105 sm:size-[clamp(3rem,4.6vw,4.25rem)]"
+                    />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <div class="mx-auto grid w-[min(calc(100%-2rem),72rem)] gap-4 pt-14 md:w-[min(calc(100%-4rem),72rem)] md:grid-cols-3">
+    {stackGroups.map((group) => (
+      <article class="group relative overflow-hidden rounded-2xl border border-paper/10 bg-panel/35 p-6 shadow-[0_1.25rem_3rem_rgba(0,0,0,0.12)] transition duration-300 hover:-translate-y-1 hover:border-violet-bright/40 hover:bg-panel/60 hover:shadow-[0_1.5rem_3rem_rgba(40,14,105,0.22)] motion-reduce:transform-none">
+        <div class="absolute inset-x-6 top-0 h-px bg-linear-to-r from-transparent via-violet-bright/90 to-transparent opacity-75" aria-hidden="true"></div>
+        <h3 class="m-0 text-xl font-semibold tracking-tight text-[#d58cff]">{group.label}</h3>
+        <ul class="mt-5 flex list-none flex-wrap gap-2 border-t border-paper/10 pt-4 p-0">
+          {group.items.map((item) => <li class="rounded-lg border border-paper/10 bg-ink/55 px-2.5 py-1.5 font-mono text-[0.7rem] text-[#d5dade] transition-colors group-hover:border-violet-bright/20">{item}</li>)}
+        </ul>
+      </article>
+    ))}
+  </div>
+</section>

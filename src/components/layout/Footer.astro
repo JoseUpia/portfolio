@@ -1,0 +1,23 @@
+---
+import { Image } from 'astro:assets';
+import { navigation, site } from '../../data/portfolio';
+import { Icon } from 'astro-icon/components';
+import brandMark from '../../assets/brand/jmu-mark.svg';
+
+const focus = 'focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet-bright';
+const isHome = Astro.url.pathname === '/';
+const resolveHref = (href: string) => (!isHome && href.startsWith('#') ? `/${href}` : href);
+---
+
+<footer class="border-t border-paper/12">
+  <div class="mx-auto grid w-[min(calc(100%_-_2rem),72rem)] items-center gap-6 py-8 md:w-[min(calc(100%_-_4rem),72rem)] md:grid-cols-[auto_minmax(12rem,1fr)_auto]">
+    <a class:list={['inline-flex items-center gap-2 font-mono text-xs font-bold text-violet-bright', focus]} href={resolveHref('#inicio')} aria-label={`${site.name}, volver al inicio`}>
+      <Image src={brandMark} alt="" class="h-6 w-9 object-contain" aria-hidden="true" /><span><span class="text-paper">jose</span><span class="text-violet-bright">upia.com</span></span>
+    </a>
+    <p class="m-0 font-mono text-[0.68rem] text-[#7f898f] md:text-center">Diseñado para comunicar con claridad. Construido para evolucionar.</p>
+    <nav class="flex flex-wrap gap-4" aria-label="Navegación secundaria">
+      {navigation.slice(1, 4).map((item) => <a class:list={['inline-flex min-h-11 items-center text-xs text-muted hover:text-paper', focus]} href={resolveHref(item.href)}>{item.label}</a>)}
+      <a class:list={['inline-flex min-h-11 items-center gap-1.5 text-xs text-muted hover:text-paper', focus]} href={site.github} target="_blank" rel="noreferrer"><Icon name="lucide:github" class="size-3.5" aria-hidden="true" />GitHub</a>
+    </nav>
+  </div>
+</footer>

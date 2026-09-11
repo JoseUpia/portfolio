@@ -1,43 +1,31 @@
-# Astro Starter Kit: Minimal
+# Portfolio de Jose Miguel Upia
+
+Portfolio personal desarrollado con Astro y Tailwind CSS. La experiencia presenta el perfil, proyectos verificables, capacidades técnicas, stack y formas de contacto en una interfaz responsive y accesible.
+
+## Desarrollo local
+
+Requiere Node.js 22.12 o posterior y pnpm 11.
 
 ```sh
-pnpm create astro@latest -- --template minimal
+pnpm install
+pnpm dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+La aplicación estará disponible en `http://localhost:4321`.
 
-## 🚀 Project Structure
+## Comandos
 
-Inside of your Astro project, you'll see the following folders and files:
+| Comando | Acción |
+| --- | --- |
+| `pnpm dev` | Inicia el servidor de desarrollo |
+| `pnpm build` | Genera la versión estática de producción |
+| `pnpm preview` | Previsualiza el build localmente |
+| `pnpm deploy` | Publica el contenido de `dist` con Wrangler |
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## Contenido
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Los datos editables están centralizados en `src/data/portfolio.ts`. Los datos de experiencia académica y profesional que no están verificados se muestran explícitamente como pendientes y no se sustituyen por contenido ficticio.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Despliegue
 
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+`wrangler.jsonc` configura `dist` como directorio de assets estáticos para Cloudflare.

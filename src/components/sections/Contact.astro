@@ -1,0 +1,71 @@
+---
+import { site } from '../../data/portfolio';
+import { Icon } from 'astro-icon/components';
+
+const focus = 'focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet-bright';
+const field = 'min-h-12 w-full rounded-lg border border-paper/12 bg-surface/45 px-3.5 py-3 text-sm text-paper transition hover:border-paper/25 placeholder:text-[#7f898f] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-bright';
+---
+
+<section class="mx-auto grid w-[min(calc(100%_-_2rem),72rem)] gap-12 border-t border-paper/12 py-[clamp(5.5rem,11vw,9rem)] md:w-[min(calc(100%_-_4rem),72rem)] md:grid-cols-[minmax(0,0.75fr)_minmax(25rem,1.25fr)]" id="contacto" aria-labelledby="contact-title">
+  <div>
+    <p class="mb-2.5 font-mono text-[0.7rem] font-bold tracking-[0.08em] text-violet-bright uppercase">// 05 — Iniciar una conversación</p>
+    <h2 id="contact-title" class="m-0 text-[clamp(2.35rem,5vw,4.4rem)] leading-none font-medium tracking-[-0.055em]">¿Tienes una idea?</h2>
+    <p class="my-5 max-w-124 text-muted">Cuéntame qué quieres construir. Podemos empezar por el problema, el contexto y el resultado que necesitas.</p>
+    <a class:list={['inline-flex min-h-11 items-center gap-2 text-[0.82rem] font-bold text-violet-bright hover:text-[#d985ff]', focus]} href={site.github} target="_blank" rel="noreferrer">
+      <Icon name="lucide:github" class="size-4" aria-hidden="true" /> Contactar por GitHub <Icon name="lucide:arrow-up-right" class="size-4" aria-hidden="true" />
+    </a>
+  </div>
+
+  <form class="grid gap-4" data-contact-form novalidate>
+    <div class="grid gap-4 md:grid-cols-2">
+      <label class="grid gap-2">
+        <span class="font-mono text-[0.7rem] text-[#c4cbd0]">Nombre</span>
+        <input class={field} name="name" type="text" autocomplete="name" required placeholder="Tu nombre" />
+      </label>
+      <label class="grid gap-2">
+        <span class="font-mono text-[0.7rem] text-[#c4cbd0]">Correo electrónico</span>
+        <input class={field} name="email" type="email" autocomplete="email" required placeholder="tu@email.com" />
+      </label>
+    </div>
+    <label class="grid gap-2">
+      <span class="font-mono text-[0.7rem] text-[#c4cbd0]">¿Qué quieres construir?</span>
+      <select class={field} name="service" required>
+        <option value="">Selecciona una opción</option>
+        <option>Producto web</option>
+        <option>Integración de IA</option>
+        <option>Prototipo técnico</option>
+        <option>Otro</option>
+      </select>
+    </label>
+    <label class="grid gap-2">
+      <span class="font-mono text-[0.7rem] text-[#c4cbd0]">Cuéntame un poco más</span>
+      <textarea class:list={[field, 'min-h-32 resize-y']} name="message" rows="5" minlength="20" required placeholder="Objetivo, alcance y contexto del proyecto…"></textarea>
+    </label>
+    <div class="flex flex-wrap items-center gap-4">
+      <button class:list={['inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-transparent bg-linear-to-br from-violet to-violet-bright px-4.5 py-3 text-sm font-bold shadow-[0_0.75rem_2rem_rgba(108,31,197,0.22)] transition hover:-translate-y-0.5 motion-reduce:transform-none', focus]} type="submit">
+        Revisar mensaje <Icon name="lucide:arrow-right" class="size-4" aria-hidden="true" />
+      </button>
+      <p class="m-0 text-xs text-muted">La integración de envío aún no está configurada.</p>
+    </div>
+    <p class="m-0 min-h-6 text-[0.82rem] text-[#d9a7f1]" data-form-status aria-live="polite" tabindex="-1"></p>
+  </form>
+</section>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  const status = document.querySelector<HTMLElement>('[data-form-status]');
+
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      if (status) status.textContent = 'Revisa los campos señalados antes de continuar.';
+      return;
+    }
+
+    if (status) {
+      status.textContent = 'Tu mensaje está completo. Para enviarlo, usa el enlace de GitHub mientras se configura el servicio de contacto.';
+      status.focus();
+    }
+  });
+</script>
