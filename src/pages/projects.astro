@@ -10,7 +10,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const focus = 'focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet-bright';
 ---
 
-<BaseLayout title={`Proyectos — ${site.name}`} description="Proyectos de software de Jose Miguel Upia, organizados desde el más reciente hasta el más antiguo.">
+<BaseLayout
+  title={`Proyectos de ${site.name} | Desarrollo de software`}
+  description="Proyectos de software de Jose Miguel Upia desarrollados con Angular, TypeScript, C#, .NET, Node.js, Astro y otras tecnologías modernas."
+  noIndex
+>
   <Header />
   <main id="contenido">
     <section class="mx-auto w-[min(calc(100%_-_2rem),72rem)] py-[clamp(4.5rem,9vw,7.5rem)] md:w-[min(calc(100%_-_4rem),72rem)]" aria-labelledby="projects-page-title">

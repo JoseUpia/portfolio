@@ -1,9 +1,9 @@
 export const site = {
   name: 'Jose Miguel Upia',
   shortName: 'joseupia.com',
-  title: 'Jose Miguel Upia — Software Developer',
+  title: 'Jose Miguel Upia | Software Developer en República Dominicana',
   description:
-    'Portafolio de Jose Miguel Upia, Software Developer especializado en aplicaciones web modernas, escalables y confiables.',
+    'Sitio oficial de Jose Miguel Upia, Software Developer en República Dominicana especializado en Angular, TypeScript, C#, .NET, Node.js y aplicaciones web.',
   github: 'https://github.com/JoseUpia',
   linkedin: 'https://www.linkedin.com/in/joseupia/',
   email: 'jose@joseupia.com',

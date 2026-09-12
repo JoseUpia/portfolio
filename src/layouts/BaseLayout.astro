@@ -1,16 +1,89 @@
 ---
 import '../styles/global.css';
+import me from '../assets/me.webp';
 import { site } from '../data/portfolio';
 import type { BaseLayoutProps } from '../types/layout';
 
 const {
   title = site.title,
   description = site.description,
-  socialImage = '/social/jose-upia-social-media.jpg',
+  socialImage = '/social/jose-miguel-upia-social.jpg',
+  pageType = 'website',
+  noIndex = false,
+  structuredData,
 } = Astro.props as BaseLayoutProps;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
-const socialImageURL = new URL(socialImage, Astro.site ?? Astro.url.origin);
+const siteURL = Astro.site ?? new URL(Astro.url.origin);
+const canonicalURL = new URL(Astro.url.pathname, siteURL);
+const socialImageURL = new URL(socialImage, siteURL);
+const profileImageURL = new URL(me.src, siteURL);
+const personId = new URL('/#person', siteURL).href;
+const websiteId = new URL('/#website', siteURL).href;
+const webpageId = `${canonicalURL.href}#webpage`;
+const robotsContent = noIndex
+  ? 'noindex, nofollow, noarchive'
+  : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+
+const schemaGraph: Record<string, unknown>[] = [
+  {
+    '@type': 'WebSite',
+    '@id': websiteId,
+    url: new URL('/', siteURL).href,
+    name: site.shortName,
+    alternateName: site.name,
+    description: site.description,
+    inLanguage: 'es-DO',
+    publisher: { '@id': personId },
+  },
+  {
+    '@type': 'Person',
+    '@id': personId,
+    name: site.name,
+    alternateName: ['Jose Upia', 'JoseUpia'],
+    url: new URL('/', siteURL).href,
+    image: {
+      '@type': 'ImageObject',
+      url: profileImageURL.href,
+      width: me.width,
+      height: me.height,
+    },
+    jobTitle: 'Software Developer',
+    description: site.description,
+    sameAs: [site.linkedin, site.github],
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Villa Altagracia',
+      addressRegion: 'San Cristóbal',
+      addressCountry: 'DO',
+    },
+    knowsAbout: ['Desarrollo de software', 'Angular', 'TypeScript', 'C#', '.NET', 'Node.js', 'PostgreSQL', 'Astro'],
+  },
+  {
+    '@type': pageType === 'profile' ? 'ProfilePage' : 'WebPage',
+    '@id': webpageId,
+    url: canonicalURL.href,
+    name: title,
+    description,
+    inLanguage: 'es-DO',
+    isPartOf: { '@id': websiteId },
+    mainEntity: { '@id': personId },
+    primaryImageOfPage: {
+      '@type': 'ImageObject',
+      url: socialImageURL.href,
+      width: 1200,
+      height: 1200,
+    },
+  },
+];
+
+if (structuredData) {
+  schemaGraph.push(...(Array.isArray(structuredData) ? structuredData : [structuredData]));
+}
+
+const schema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': schemaGraph,
+}).replaceAll('<', '\\u003c');
 ---
 
 <!doctype html>
@@ -19,18 +92,26 @@ const socialImageURL = new URL(socialImage, Astro.site ?? Astro.url.origin);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="theme-color" content="#161b1e" />
+    <meta name="color-scheme" content="dark" />
     <meta name="description" content={description} />
+    <meta name="author" content={site.name} />
+    <meta name="robots" content={robotsContent} />
+    <meta name="googlebot" content={robotsContent} />
     <meta name="generator" content={Astro.generator} />
     <link rel="canonical" href={canonicalURL} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="me" href={site.linkedin} />
+    <link rel="me" href={site.github} />
     <link rel="icon" href="/favicon.ico" sizes="any" />
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={pageType} />
     <meta property="og:locale" content="es_DO" />
     <meta property="og:site_name" content={site.shortName} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={socialImageURL} />
+    <meta property="og:image:url" content={socialImageURL} />
     <meta property="og:image:secure_url" content={socialImageURL} />
     <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
@@ -42,6 +123,9 @@ const socialImageURL = new URL(socialImage, Astro.site ?? Astro.url.origin);
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImageURL} />
     <meta name="twitter:image:alt" content="Logo de Jose Miguel Upia, Software Developer." />
+    {pageType === 'profile' && <meta property="profile:first_name" content="Jose Miguel" />}
+    {pageType === 'profile' && <meta property="profile:last_name" content="Upia" />}
+    <script type="application/ld+json" set:html={schema}></script>
     <title>{title}</title>
   </head>
   <body class="min-h-screen bg-[radial-gradient(circle_at_77%_10%,rgba(108,31,197,0.09),transparent_24rem)] antialiased">
