@@ -5,7 +5,8 @@ export const projects: Project[] = [
   {
     slug: 'portafolio-personal', title: 'Portafolio personal', eyebrow: 'Experiencia web',
     description: 'Una identidad digital construida para presentar experiencia, criterio técnico y formas de colaboración con claridad.',
-    technologies: ['Astro', 'TypeScript', 'Tailwind CSS'], visibility: 'private', updatedAt: '2026-09-10', featured: true, featuredOrder: 2,
+    technologies: ['Astro', 'TypeScript', 'Tailwind CSS'], visibility: 'public', updatedAt: '2026-09-10', 
+    repository: 'https://github.com/JoseUpia/portfolio', website: 'https://joseupia.com', featured: true, featuredOrder: 2,
   },
   {
     slug: 'plataforma-de-trailers', title: 'Plataforma de trailers', eyebrow: 'Aplicación de extremo a extremo',

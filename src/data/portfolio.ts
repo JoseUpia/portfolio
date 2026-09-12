@@ -1,9 +1,9 @@
 export const site = {
   name: 'Jose Miguel Upia',
   shortName: 'joseupia.com',
-  title: 'Jose Miguel Upia — Software e inteligencia artificial',
+  title: 'Jose Miguel Upia — Software Developer',
   description:
-    'Portafolio de Jose Miguel Upia: desarrollo de software, experiencias web e inteligencia artificial.',
+    'Portafolio de Jose Miguel Upia, Software Developer especializado en aplicaciones web modernas, escalables y confiables.',
   github: 'https://github.com/JoseUpia',
   linkedin: 'https://www.linkedin.com/in/joseupia/',
   email: 'jose@joseupia.com',
